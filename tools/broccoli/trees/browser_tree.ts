@@ -118,7 +118,7 @@ module.exports = function makeBrowserTree(options, destinationPath) {
   });
 
   // Use TypeScript to transpile the *.ts files to ES5
-  var es5Tree = compileWithTypescript(es5ModulesTree, {
+  var typescriptOptions = {
     allowNonTsExtensions: false,
     declaration: false,
     emitDecoratorMetadata: true,
@@ -126,12 +126,13 @@ module.exports = function makeBrowserTree(options, destinationPath) {
     mapRoot: '',  // force sourcemaps to use relative path
     module: 'CommonJS',
     moduleResolution: 1 /* classic */,
-    noEmitOnError: false,
+    noEmitOnError: true,
     rootDir: '.',
     sourceMap: true,
     sourceRoot: '.',
     target: 'ES5'
-  });
+  };
+  var es5Tree = compileWithTypescript(es5ModulesTree, typescriptOptions);
 
   // Now we add a few more files to the es6 tree that the es5 tree should not see
   var extras = new Funnel('tools/build', {files: ['es5build.js'], destDir: 'angular2'});
